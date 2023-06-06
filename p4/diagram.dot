@@ -1,0 +1,46 @@
+/* nonsense example diagram to show you the syntax. Reference:
+ * https://www.graphviz.org/doc/info/lang.html
+ * */
+
+digraph comments {
+  // basic settings for nodes and edges:
+  node [shape=circle, style=filled, fillcolor=palegreen3];
+  edge [fontsize=12, penwidth=1, minlen=3];
+
+  // list of states:
+  NORMAL [label="Normal"];
+  SLASH [label="Slash"];
+  STAR [label="Star"];
+  LINE_COMMENT [label="Line Comment"];
+  BLOCK_COMMENT [label="Block Comment"];
+  DOUBLE_QUOTE [label="Double Quote"];
+  SINGLE_QUOTE [label="Single Quote"];
+
+  // transition function with labeled arrows:
+  NORMAL -> SLASH [xlabel="/"];
+  NORMAL -> DOUBLE_QUOTE [xlabel="\""];
+  NORMAL -> SINGLE_QUOTE [xlabel="'"];
+  NORMAL -> NORMAL;
+  SLASH -> LINE_COMMENT [xlabel="/"];
+  SLASH -> BLOCK_COMMENT [xlabel="*"];
+  SLASH -> NORMAL [xlabel="other"];
+  STAR -> BLOCK_COMMENT;
+  LINE_COMMENT -> NORMAL [xlabel="\n"];
+  BLOCK_COMMENT -> STAR [xlabel="*"];
+  DOUBLE_QUOTE -> NORMAL [xlabel="\""];
+  DOUBLE_QUOTE -> DOUBLE_QUOTE;
+  SINGLE_QUOTE -> NORMAL [xlabel="'"];
+  SINGLE_QUOTE -> SINGLE_QUOTE;
+  /* NOTE: "xlabel" places edge labels near center of edge, and sometimes
+   * (in my experience) will improve the layout over using "label".
+   * https://graphviz.org/docs/attrs/xlabel/
+   * */
+
+  /* NOTE: if you want certain nodes to have the same vertical position,
+   * you can list them in a block starting with "rank=same;" */
+  {
+    rank=same;
+    NORMAL;
+
+  }
+}

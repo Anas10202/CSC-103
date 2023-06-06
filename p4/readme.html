@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="" />
+  <title>103 Project 4: Uncommenting C/C++</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  
+  <style type="text/css">
+  body 
+  {
+  	font-family:Gill Sans MT;
+  	color:#657b83;
+  	background-color:#fdf6e3;
+  	max-width:500pt;
+  	padding-left:25pt;
+  	padding-right:25pt;
+  	padding-bottom:20pt;
+  	margin:0 auto 0 auto;
+  	text-align:justify;
+  }
+  a:link {color:#6c71c4;}
+  a:visited {color:#859900;}
+  a:hover {color:#268bd2;}
+  a:active {color:#d33682;}
+  h1{}
+  h2{border-style:solid;
+   text-align:center;
+  }
+  h3
+  {
+  	margin-bottom:2pt;
+  	/*color:#268bd2;*/
+  	font-weight:bold;
+  }
+  strong
+  {
+  	color:#d33682;
+  	font-weight:bolder;
+  }
+  em
+  {
+  	color:#268bd2;
+  	font-style:italic;
+  	font-weight:bolder;
+  }
+  code
+  {
+      background-color:#eee8d5;
+      color:#586e75;
+  }
+  table.sourceCode
+  {
+      background-color:#eee8d5;
+      color:#586e75;
+  }
+  pre.sourceCode
+  {
+      background-color:#eee8d5;
+      color:#586e75;
+  }
+  .math
+  {
+      /*background-color:#eee8d5;*/
+      color:#586e75;
+      font-family:Times New Roman;
+  }
+  /*use a contextual style to undo the blue-ness:*/
+  .math em
+  {
+      color:#586e75;
+  	font-weight:normal;
+  }
+  .descrip
+  {
+  	max-width:500pt;
+  	padding-left:25pt;
+  	text-align:justify;
+  }
+  .descripbig
+  {
+  	max-width:575pt;
+  	padding-left:0pt;
+  	text-align:justify;
+  }
+  .emph
+  {
+  	color:#d33682;
+  	font-weight:bolder;
+  }
+  .litem
+  {
+  	color:#268bd2;
+  	font-style:italic;
+  	font-weight:bolder;
+  }
+  .hl
+  {
+  	color:#268bd2;
+  	font-style:italic;
+  }
+  .required
+  {
+  	color:#268bd2;
+  	font-style:italic;
+  	font-weight:bold;
+  }
+  .inputbox
+  {
+  	background-color:#eee8d5;
+  	color:#586e75;
+  	font-family:Gill Sans MT;
+  	font-weight:bolder;
+  }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">103 Project 4: Uncommenting C/C++</h1>
+<p class="author"></p>
+</header>
+<h2 id="due-tuesday-april-18th-1159pm"><em>Due:</em> Tuesday, April 18th <span class="citation" data-cites="11:59pm">@11:59pm</span></h2>
+<!---{{ Synopsis-->
+<h2 id="synopsis">Synopsis</h2>
+<p>Write a program that removes comments from C/C++ code.</p>
+<p>What you’ll learn from doing this:</p>
+<ul>
+<li>More about the <code>&lt;string&gt;</code> class.</li>
+<li>Solving problems with <em>finite state machines</em>.</li>
+<li>The <a href="https://en.wikipedia.org/wiki/Dot_language">dot</a> language and <a href="https://en.wikipedia.org/wiki/Graphviz">graphviz</a>.</li>
+<li>Writing to <code>stderr</code>.</li>
+</ul>
+<h2 id="important-notes">Important Notes</h2>
+<p>Compile often! It’s much less frustrating that way if/when things go wrong.</p>
+<p>Also, please be kind to your instructors and avoid sadistic indentation! You don’t have to follow this exactly, but maybe it will give you some good ideas: <a href="https://www.kernel.org/doc/html/v4.10/process/coding-style.html">Linux Kernel Coding Style</a>.</p>
+<p>Lastly, please follow the <a href="#submission-procedure">submission instructions</a> carefully, as the files you turn in for this include your state diagram in addition to the program source code.</p>
+<!---}}-->
+<!---{{ Compiling-->
+<h2 id="compiling">Compiling</h2>
+<p>There’s a <code>Makefile</code>, so all you have to do to build the programs is execute <code>make</code>. Note that the <code>Makefile</code> also has rules to render your state diagram to <code>.svg</code>. Remember that <code>make</code> will print exactly the commands it is running if you are curious or want to run one of the steps manually.</p>
+<!---}}-->
+<!---{{ Details-->
+<h2 id="details">Details</h2>
+<p>Your program should reliably remove single and multi line comments like these:<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">// double slash comments like this one</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">/* multiline slash+star ...</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="co">   star+slash comments like this one */</span></span></code></pre></div>
+<p>As usual, your program will read <a href="https://en.wikipedia.org/wiki/Standard_streams">standard input</a> and write <a href="https://en.wikipedia.org/wiki/Standard_streams">standard output</a>.</p>
+<p>To solve this problem, I want you to design and use a <a href="https://en.wikipedia.org/wiki/Finite_state_machine">finite state machine</a>. You should be familiar with this from lecture (we used it to solve the problem of counting words in an input stream). I want you to actually write down a state diagram and <strong>submit this as part of the project</strong>. For this, please use the <a href="https://en.wikipedia.org/wiki/Dot_language">dot language</a>. It is very straightforward (although there is a lot of fancy formatting available). I have given you a template with a nonsense diagram for you to modify. You can render your diagram using the <code>dot</code> program from <a href="https://en.wikipedia.org/wiki/Graphviz">graphviz</a> (it is already installed on the virtual machine, but it is easy to get for other platforms as well). Below is the (nonsense) example <code>diagram.dot</code> rendered with graphviz.</p>
+<figure>
+<img src="fsm.svg" alt="Fig. 1: Example State Diagram" /><figcaption aria-hidden="true">Fig. 1: Example State Diagram</figcaption>
+</figure>
+<p>Please edit <code>diagram.dot</code> to represent the state machine for your solution.</p>
+<!---}}-->
+<!---{{ Hints-->
+<h2 id="hints">Hints</h2>
+<h3 id="implementing-state-machines">Implementing State Machines</h3>
+<p>I realize state diagrams don’t look much like C++, but it is actually easy to convert. Just use an integer for which state you are in, and update it according to the diagram as you read characters. You need to have a special case to handle every <em>arrow</em> in your diagram.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> If you think about it, the space where these arrows live should be a subset of the Cartesian product <span class="math inline"><em>s</em><em>t</em><em>a</em><em>t</em><em>e</em><em>s</em> × <em>c</em><em>l</em><em>a</em><em>s</em><em>s</em><em>e</em><em>s</em></span>: where <span class="math inline"><em>c</em><em>l</em><em>a</em><em>s</em><em>s</em><em>e</em><em>s</em></span> refers to the different types of characters you need to handle (e.g. whitespace vs normal chars…). And hence the high level structure will reflect this product. This is often done with a switch statement, but <code>if...else</code> is fine as well. Here’s a generic outline:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp numberLines"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1"></a>state s = stateA;</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="dt">char</span> c;</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="cf">while</span> (<span class="co">/* read a new character into c */</span>) {</span>
+<span id="cb3-4"><a href="#cb3-4"></a>    <span class="cf">switch</span> (s) {</span>
+<span id="cb3-5"><a href="#cb3-5"></a>        <span class="cf">case</span> stateA:</span>
+<span id="cb3-6"><a href="#cb3-6"></a>            <span class="co">// handle all arrows *leaving* stateA:</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>            <span class="cf">if</span> (c == <span class="ch">&#39;/&#39;</span>) {</span>
+<span id="cb3-8"><a href="#cb3-8"></a>                <span class="co">// update state s if needed</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>                s = stateB;</span>
+<span id="cb3-10"><a href="#cb3-10"></a>                <span class="co">// perform any other actions that should occur</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>                <span class="co">// for the arrow stateA --&gt; stateB</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>            }</span>
+<span id="cb3-13"><a href="#cb3-13"></a>            <span class="cf">else</span> <span class="cf">if</span> (iswhitespace(c)) {</span>
+<span id="cb3-14"><a href="#cb3-14"></a>                <span class="co">// ... analogous to above ...</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a>                s = stateC;</span>
+<span id="cb3-16"><a href="#cb3-16"></a>                <span class="co">// ...</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a>            }</span>
+<span id="cb3-18"><a href="#cb3-18"></a>            <span class="cf">else</span> <span class="cf">if</span> (c == <span class="ch">&#39;#&#39;</span>) {...}</span>
+<span id="cb3-19"><a href="#cb3-19"></a>            <span class="co">// ... go through all relevent classes of characters ...</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a>            <span class="cf">break</span>;</span>
+<span id="cb3-21"><a href="#cb3-21"></a>        <span class="cf">case</span> stateB:</span>
+<span id="cb3-22"><a href="#cb3-22"></a>            <span class="co">// similar to the above, go through all relevant classes</span></span>
+<span id="cb3-23"><a href="#cb3-23"></a>            <span class="co">// of charcters corresponding to the arrows *leaving*</span></span>
+<span id="cb3-24"><a href="#cb3-24"></a>            <span class="co">// stateB...</span></span>
+<span id="cb3-25"><a href="#cb3-25"></a>            <span class="cf">break</span>;</span>
+<span id="cb3-26"><a href="#cb3-26"></a>        <span class="cf">case</span> stateC:</span>
+<span id="cb3-27"><a href="#cb3-27"></a>            <span class="co">// similar to the above, go through all relevant classes</span></span>
+<span id="cb3-28"><a href="#cb3-28"></a>            <span class="co">// of charcters corresponding to the arrows *leaving*</span></span>
+<span id="cb3-29"><a href="#cb3-29"></a>            <span class="co">// stateC...</span></span>
+<span id="cb3-30"><a href="#cb3-30"></a>            <span class="cf">break</span>;</span>
+<span id="cb3-31"><a href="#cb3-31"></a>    }</span>
+<span id="cb3-32"><a href="#cb3-32"></a>}</span></code></pre></div>
+<p>Reminder: using an <code>enum</code> is also common for situations like this. It lets you use memorable names instead of numbers, and without the hassle of setting up a separate variable for each state:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp numberLines"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">// with an enum:</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="kw">enum</span> state {normal,slash,slashstar,...};</span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co">// the equivalent without an enum:</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="at">const</span> <span class="dt">int</span> normal = <span class="dv">0</span>;</span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="at">const</span> <span class="dt">int</span> slash = <span class="dv">1</span>;</span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="at">const</span> <span class="dt">int</span> slashstar = <span class="dv">2</span>;</span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co">// ...</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co">// using the enum, you can store the values in an int, or</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="co">// a variable of type &quot;state&quot;:</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>state s = normal;</span></code></pre></div>
+<p>Please consult our word count solution from lecture for a detailed example.</p>
+<h3 id="reading-the-input-one-character-at-a-time">Reading the input one character at a time</h3>
+<p>The following looks plausibly correct:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp numberLines"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1"></a><span class="dt">char</span> c;</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="cf">while</span> (cin &gt;&gt; c) {</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    <span class="co">// process c</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>}</span></code></pre></div>
+<p>But you will probably not enjoy the results. In particular, this will skip right over whitespace characters which will almost certainly throw off your results. The following should lead to fewer surprises:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp numberLines"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1"></a><span class="dt">char</span> c;</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="cf">while</span> (scanf(<span class="st">&quot;</span><span class="sc">%c</span><span class="st">&quot;</span>,&amp;c) &gt; <span class="dv">0</span>) {</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    <span class="co">// process c</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>}</span></code></pre></div>
+<!---}}-->
+<!---{{ Subtleties-->
+<h2 id="some-subtle-points">Some Subtle Points</h2>
+<p>The most notable issue you might face is handling string literals:<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>string fml = <span class="st">&quot;/* this is not a comment lol */&quot;</span>;</span></code></pre></div>
+<p>So your program will have to have some awareness of whether or not it is currently reading characters inside a string literal. Don’t forget to handle an escaped quote:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="ex">string</span> fml2 = <span class="st">&quot;end of string is not </span><span class="dt">\&quot;</span><span class="st">here</span><span class="dt">\&quot;</span><span class="st">, but here.&quot;</span><span class="kw">;</span></span></code></pre></div>
+<p>A more subtle issue is that you might not love how newlines are handled with the most straightforward approach to this project. For example, consider a block of comments like this:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">// Lorem ipsum dolor sit amet, consectetur adipiscing elit,</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="co">// sed do eiusmod tempor incididunt ut labore et dolore magna</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="co">// aliqua. Ut enim ad minim veniam, quis nostrud exercitation</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="co">// ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="co">// ...</span></span></code></pre></div>
+<p>After running your program, you might find that there are a bunch of newlines left where the comments once were. Can you see a good way to remove them? Keep in mind that you don’t <em>always</em> want to remove the newline, e.g.:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="dt">int</span> x=<span class="dv">99</span>; <span class="co">// x is my friend</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="cf">for</span> (<span class="dt">int</span> i=<span class="dv">0</span>; i&lt;<span class="dv">10</span>; i++) {...}</span></code></pre></div>
+<p>Might result in this:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="dt">int</span> x=<span class="dv">99</span>; <span class="cf">for</span> (<span class="dt">int</span> i=<span class="dv">0</span>; i&lt;<span class="dv">10</span>; i++) {...}</span></code></pre></div>
+<p>(You probably don’t want the <code>for</code> loop to appear on the same line as the variable declaration…) Try to make your state machine handle these cases in a sensible way.</p>
+<p>There is also the possibility of line continuation making a <code>//</code> comment span multiple lines like this:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="co">// first part of comment... </span><span class="er">\</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="co">this is still a comment!</span></span></code></pre></div>
+<p>You don’t have to address this case, but for what it’s worth, this is how the language works.</p>
+<!---}}-->
+<!---{{ Testing-->
+<h2 id="testing-and-debugging">Testing and Debugging</h2>
+<h3 id="testing">Testing</h3>
+<p>Unlike previous projects, there is not a rigid test script. Instead, you should simply run it on some C/C++ code and see if it works. It might be convenient to produce a side by side diff for testing. You could do something like this to test your code on itself:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a>$ <span class="ex">vimdiff</span> rmcomments.cpp <span class="op">&lt;(</span><span class="ex">./rmcomments</span> <span class="op">&lt;</span> rmcomments.cpp<span class="op">)</span></span></code></pre></div>
+<p>The left side will show the original file, and the right side will show you the output of your program, which hopefully will have all the comments removed. <em>Note:</em> if you want to understand this command, run <code>info bash</code> and check out section 3.5.6 on <a href="https://en.wikipedia.org/wiki/Process_substitution">Process Substitution</a>. Also read <code>man vimdiff</code>.</p>
+<p>There’s also the heavily commented <code>wordcount.cpp</code> which you can use as a test (and also as a reference for problem solving via state machines):</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a>$ <span class="ex">vimdiff</span> wordcount.cpp <span class="op">&lt;(</span><span class="ex">./rmcomments</span> <span class="op">&lt;</span> wordcount.cpp<span class="op">)</span></span></code></pre></div>
+<p><em>Note:</em> You can find the output of my program when run on <code>wordcount.cpp</code> in the file <code>uc-wordcount.cpp</code>, but it is not essential that your output is identical to mine.</p>
+<h3 id="debugging">Debugging</h3>
+<p>If (heaven forbid) your program doesn’t immediately work on your first attempt, you may have some issues with your state machine. I would suggest doing something along the following lines to track down any issues. Add two print statements (to <code>stderr</code>) – one at the top of your loop which reads characters, and one at the bottom. The goal is to print each character that you read, and show you how it has transformed the state:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource cpp numberLines"><code class="sourceCode cpp"><span id="cb15-1"><a href="#cb15-1"></a>state s;</span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="dt">char</span> c;</span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="cf">while</span> (scanf(<span class="st">&quot;</span><span class="sc">%c</span><span class="st">&quot;</span>,&amp;c) &gt; <span class="dv">0</span>) {</span>
+<span id="cb15-4"><a href="#cb15-4"></a>    fprintf(stderr, <span class="st">&quot;</span><span class="sc">%c</span><span class="st"> :: </span><span class="sc">%i</span><span class="st"> --&gt; &quot;</span>,c,s); <span class="co">// &lt;--- Add this line!</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a>    <span class="cf">switch</span> (s) {</span>
+<span id="cb15-6"><a href="#cb15-6"></a>        <span class="cf">case</span> stateA:</span>
+<span id="cb15-7"><a href="#cb15-7"></a>            <span class="co">// ...</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a>            <span class="cf">break</span>;</span>
+<span id="cb15-9"><a href="#cb15-9"></a>        <span class="cf">case</span> stateB:</span>
+<span id="cb15-10"><a href="#cb15-10"></a>            <span class="co">// ...</span></span>
+<span id="cb15-11"><a href="#cb15-11"></a>            <span class="cf">break</span>;</span>
+<span id="cb15-12"><a href="#cb15-12"></a>        <span class="co">// ...</span></span>
+<span id="cb15-13"><a href="#cb15-13"></a>    }</span>
+<span id="cb15-14"><a href="#cb15-14"></a>    fprintf(stderr, <span class="st">&quot;</span><span class="sc">%i\n</span><span class="st">&quot;</span>,s); <span class="co">// &lt;--- And this one!</span></span>
+<span id="cb15-15"><a href="#cb15-15"></a>}</span></code></pre></div>
+<p>Now isolate a small example of code where your program does not work. Store that in a file, say <code>/tmp/fml.cpp</code>, which perhaps looks like this:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="dt">char</span> c = <span class="ch">&#39;&quot;&#39;</span>;</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="co">// why?????</span></span></code></pre></div>
+<p>Then run your program on this example <em>and redirect stderr to a file</em> like this:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a>$ <span class="ex">./rmcomments</span> <span class="op">&lt;</span> /tmp/fml.cpp <span class="op">2&gt;</span> /tmp/states</span></code></pre></div>
+<p>The <code>2&gt; /tmp/states</code> will take anything you printed to <code>stderr</code> and place it in <code>/tmp/states</code>, while leaving the rest of the output (<code>stdout</code>) alone. Then your <code>states</code> file will look something like this:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode latex"><code class="sourceCode latex"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a>c :: 0 --&gt; 0</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a>h :: 0 --&gt; 0</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a>a :: 0 --&gt; 0</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true"></a>r :: 0 --&gt; 0</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true"></a>  :: 0 --&gt; 1</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true"></a>c :: 1 --&gt; 0</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true"></a>  :: 0 --&gt; 1</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true"></a>...</span></code></pre></div>
+<p>Then you can at least make sure the state transitions are happening as you expect and evaluate your actions on each one… (Note you might not have a separate state for white space as shown above – it was just a possible example.)</p>
+<!---}}-->
+<!---{{ Submission Procedure-->
+<h2 id="submission-procedure">Submission Procedure</h2>
+<p>Assuming you have the <code>postdata</code> file all set with your info,<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> just run:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a>$ <span class="bu">cd</span> ~/csc103-projects/</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a>$ <span class="ex">./submit.sh</span> p4/rmcomments.cpp    # turn in your code</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a>$ <span class="ex">./submit.sh</span> p4/diagram.dot       # turn in your finite state machine</span></code></pre></div>
+<p>If you see a green message saying something about “success”, then it worked. A receipt will be stored in a file named <code>[name of cpp file]-rcpt.html</code>.</p>
+<p><em>Note:</em> you can also use the <a href="https://www-cs.ccny.cuny.edu/~wes/CSC103/upload.html">online form</a> if that is more convenient. A few <strong>important notes:</strong></p>
+<ul>
+<li><em>Save the receipt.</em> You will need this to get your homework score back later from <a href="https://www-cs.ccny.cuny.edu/~wes/CSC103/download.html">the hw download page</a>.</li>
+<li><em>Don’t change the filenames.</em> Just edit and submit the files from the repository. If you turn a files with different names, they will not be graded.</li>
+<li><em>Respect the deadline.</em> Turning in homework past the deadline will be noticed, and may lead to a zero.</li>
+</ul>
+<!---}}-->
+<!---{{ Extras-->
+<h2 id="looking-for-more">Looking for more?</h2>
+<p>If you managed to finish early, here are a few ways you could extend the project for extra practice.</p>
+<ol type="1">
+<li>Keep statistics about the number of lines and characters removed, and print this information to <a href="https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)">stderr</a> if requested (add a command line option to enable this behavior).</li>
+<li>If you haven’t already, handle newlines in a nice way see the section on <a href="#some-subtle-points">Subtleties</a> above. (E.g., if a comment is the only thing on the line, perhaps removing the entire line is the ideal behavior.) Also, consider handling line continuation (see example above).</li>
+<li>Try to remove blocks wrapped in an <code>#if 0 ... #endif</code>, like this:</li>
+</ol>
+<div class="sourceCode" id="cb20"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="pp">#if 0</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a><span class="co">Stuff like this would be obviously &quot;commented out&quot;</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a><span class="co">by the C preprocessor.</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true"></a><span class="pp">#endif</span></span></code></pre></div>
+<!---}}-->
+<!---{{ links-->
+<!---}}-->
+<!---
+% vim:ff=unix:textwidth=78:foldmethod=marker:foldmarker={{,}}
+-->
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>Note that the C preprocessor will also do this, among other things. If you are curious, the invocation would be something like <code>$ cpp -fpreprocessed -P inputfile.cpp -o -</code>. See <code>man cpp</code> for details.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>Possible exception would be if you have a self-arrow (state doesn’t change) where no other actions need to be taken, e.g., when you are in the middle of ignoring a comment.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>I think you should not have to worry about <em>character literals</em> (single quotes) if you assume the input is valid C/C++.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p>If you need more detailed instructions on setting this up, please consult the project 1 readme.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+</body>
+</html>
